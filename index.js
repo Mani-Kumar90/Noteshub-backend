@@ -9,7 +9,9 @@ const emailVerifyRoute = require('./routes/emailVerify')
 
 const app = express();
 const PORT = process.env.PORT || 8000;
+import axios from 'axios';
 
+const SERVER_URL = 'https://noteshub-backend-ptnu.onrender.com';
 connectDB();
 const allowedOrigins = [
   "http://localhost:5173",
@@ -37,7 +39,11 @@ app.use("/api",emailVerifyRoute);
 app.get('/', (req, res) => {
     res.send("server is live");
 });
-
+setInterval(() => {
+  axios.get(SERVER_URL)
+    .then(() => console.log('Pinged server to keep it alive'))
+    .catch(err => console.error('Ping failed:', err.message));
+}, 10 * 60 * 1000);
 
 
 app.listen(PORT, () => {
